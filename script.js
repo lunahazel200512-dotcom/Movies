@@ -15,7 +15,7 @@ const movies = [
     casting: "Shane Nigam, Sakshi Vaidya, Johny Antony, Sangeetha, Nishanth Sagar",
     description: "Two young lovers from opposing social classes navigate prejudice and family expectations in modern-day society, as their forbidden romance challenges deep-rooted traditions.",
     imdbId: "tt32104889",
-    server1: "https://lulustream.com/e/os4oa4xac13y",
+    server1: "https://www.2embed.cc/embed/tt32104889",
     server2: "https://lulustream.com/e/os4oa4xac13y",
     showPlayer: false,
     showTelegram: false,
