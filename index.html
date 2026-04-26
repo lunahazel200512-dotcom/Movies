@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GlassWave - Stream the latest movies and shows online for free.">
+    <title>GlassWave — Stream Free Movies</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="logo" onclick="window.location.reload()">
+            Glass<span>Wave</span>
+        </div>
+
+        <div class="search-container">
+            <!-- Expandable search bar -->
+            <div class="search-wrapper" id="searchBar">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search movies..."
+                    onkeyup="searchMovies()"
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Search icon toggle -->
+            <button class="search-icon-btn" onclick="toggleSearch()" aria-label="Toggle search">
+                <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Suggestions dropdown -->
+            <div id="suggestions"></div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main id="homeContent">
+        <!-- Populated by script.js → renderHome() -->
+        <div class="loader-wrapper">
+            <div class="loader"></div>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <p>© 2026 <span>GlassWave</span>. All rights reserved. For entertainment purposes only.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Render home on load
+        window.addEventListener('DOMContentLoaded', renderHome);
+    </script>
+
+</body>
+</html>
