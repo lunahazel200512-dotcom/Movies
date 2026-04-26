@@ -469,7 +469,7 @@ function loadMovieDetails() {
                 <div class="player-section">
                     ${m.imdbId ? vidsrcPlayerHTML : m.showPlayer ? `
                         <div class="watch-hint">
-                            <p>Watch Online</p>
+                            <p>Watch Online(Player වැඩ නැති වුනොත් Download කරගෙන බලන්න)</p>
                             <i class="fas fa-chevron-down animated-arrow"></i>
                         </div>
                         <div class="modern-player" id="playerArea">
