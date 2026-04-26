@@ -46,7 +46,7 @@ const movies = [
         dateAdded: "2026-04-26"
     },
    {
-        id: "white-snake",
+        id: "dolphin-boy",
         title: "Dolphin Boy | සිසිංහල හඩකැවූ",
         rating: "5.1",
         quality: "FHD",
