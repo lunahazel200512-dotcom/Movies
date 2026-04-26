@@ -393,11 +393,11 @@ function loadMovieDetails() {
             ">
                 <span style="display:flex;align-items:center;gap:6px;">
                     <i class="fas fa-expand" style="color:var(--accent);font-size:0.9rem;"></i>
-                    <span>හොඳ experience සඳහා <b style="color:var(--text);">Fullscreen</b> mode ගන්න</span>
+                    <span>හොඳ experience සඳහා <b style="color:var(--text);">Fullscreen</b> mode ගන්න. (වෙනත් වෙබ්සයිට් වලට ගියහොත් ඒවා Close කර නැවත Back වෙන්න)</span>
                 </span>
                 <span style="display:flex;align-items:center;gap:6px;">
                     <i class="fas fa-closed-captioning" style="color:var(--accent);font-size:0.9rem;"></i>
-                    <span>Subtitle නොපෙනේ නම් player ඇතුළේ <b style="color:var(--text);">CC</b> icon ඔබන්න</span>
+                    <span>Subtitle නොපෙනේ නම් player ඇතුළේ <b style="color:var(--text);">CC</b> icon ඔබන්න. (සුළු වෙලාවක් ගතවේවි Play වෙන්න) </span>
                 </span>
             </div>
 
