@@ -17,7 +17,7 @@ const movies = [
     imdbId: "tt32104889",
     server1: "https://lulustream.com/e/os4oa4xac13y",
     server2: "https://lulustream.com/e/os4oa4xac13y",
-    showPlayer: true,
+    showPlayer: false,
     showTelegram: false,
     showTelegram1080: true,
     telegramLink1080: "https://t.me/SHFMovieBot?start=CeWwzQI0",
