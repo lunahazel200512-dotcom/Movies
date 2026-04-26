@@ -4,17 +4,13 @@
 
 // --- 1. MOVIES DATABASE ---
 const movies = [
-
-    // ============================================================
-    // 🎬 POPULAR CARTOONS 2025–2026
-    // ============================================================
     {
         id: "the-little-mermaid",
         title: "The Little Mermaid | සිංහල හඩකැවූ",
         rating: "5.0",
         quality: "HD",
         img: "https://media.themoviedb.org/t/p/w600_and_h900_face/qEM80vqREgfjk7YhIbl4AgfZ47S.jpg",
-        category: "Cartoon",
+        category: "Live Action",
         duration: "1h 25m",
         casting: "William Moseley, Poppy Drayton, Shanna Collins",
         description: "A young reporter and his niece discover a beautiful and enchanting creature they believe to be the real little mermaid.",
@@ -89,7 +85,7 @@ const movies = [
         rating: "5.1",
         quality: "FHD",
         img: "https://image.tmdb.org/t/p/w1280/gISoDEiaUH9BNEunmLC7FgUVaia.jpg",
-        category: "Animation",
+        category: "Live Action",
         duration: "1h 25m",
         casting: "N/N",
         description: "Dolphin Snowball rescues a little boy in the waves. Since then, they carelessly grow up together, exciting the marine life with their funny tricks. But one day, the peace of their joyful little world is destroyed by the evil Octopus.",
@@ -101,6 +97,8 @@ const movies = [
         showTelegram: false,
         dateAdded: "2026-04-26"
     },
+	
+	
 ];
 
 
@@ -471,16 +469,86 @@ function loadMovieDetails() {
                         </div>
                     `}
 
-                    ${m.showTelegram ? `
+                    ${(m.showTelegram || m.showTelegram1080 || m.showTelegram720 || m.showSubtitle) ? `
                         <div class="tg-section">
                             <p class="tg-label"><i class="fas fa-download"></i> Download Options</p>
-                            <button id="tg-btn" class="telegram-btn" onclick="handleTelegram('${m.telegramLink}')">
-                                <i class="fab fa-telegram"></i> Download via Telegram
-                            </button>
-                            <div id="tg-countdown" style="display:none; margin-top:10px; font-size:0.82rem; color:var(--text-muted); text-align:center;">
-                                <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="tg-timer">2</span>s...
+
+                            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+
+                                ${/* ── 1080P button ── */ ""}
+                                ${m.showTelegram1080 ? `
+                                    <button id="tg-btn-1080" class="telegram-btn tg-animated tg-1080"
+                                        onclick="handleTelegramBtn('tg-btn-1080','tg-countdown-1080','${(m.telegramLink1080||m.telegramLink).replace(/'/g,"\\'")}')">
+                                        <i class="fab fa-telegram"></i> Download 1080P
+                                    </button>
+                                ` : (m.showTelegram720 ? "" : m.showTelegram ? `
+                                    <button id="tg-btn" class="telegram-btn tg-animated tg-1080"
+                                        onclick="handleTelegramBtn('tg-btn','tg-countdown','${(m.telegramLink||"").replace(/'/g,"\\'")}')">
+                                        <i class="fab fa-telegram"></i> Download via Telegram
+                                    </button>
+                                ` : "")}
+
+                                ${/* ── 720P button ── */ ""}
+                                ${m.showTelegram720 ? `
+                                    <button id="tg-btn-720" class="telegram-btn tg-animated tg-720"
+                                        onclick="handleTelegramBtn('tg-btn-720','tg-countdown-720','${(m.telegramLink720||m.telegramLink).replace(/'/g,"\\'")}')">
+                                        <i class="fab fa-telegram"></i> Download 720P
+                                    </button>
+                                ` : ""}
+
+                                ${/* ── Sinhala subtitle button ── */ ""}
+                                ${m.showSubtitle ? `
+                                    <a id="sub-btn" class="telegram-btn tg-animated tg-sub"
+                                        href="${(m.subtitleLink||"#").replace(/'/g,"\\'")}"
+                                        target="_blank" rel="noopener"
+                                        style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                                        <i class="fas fa-closed-captioning"></i> සිංහල උපසිරැසි
+                                    </a>
+                                ` : ""}
+
                             </div>
+
+                            ${/* ── Countdown slots ── */ ""}
+                            ${m.showTelegram1080 ? `
+                                <div id="tg-countdown-1080" style="display:none; margin-top:8px; font-size:0.82rem; color:var(--text-muted);">
+                                    <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="tg-timer-1080">2</span>s...
+                                </div>
+                            ` : (m.showTelegram ? `
+                                <div id="tg-countdown" style="display:none; margin-top:8px; font-size:0.82rem; color:var(--text-muted);">
+                                    <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="tg-timer">2</span>s...
+                                </div>
+                            ` : "")}
+                            ${m.showTelegram720 ? `
+                                <div id="tg-countdown-720" style="display:none; margin-top:8px; font-size:0.82rem; color:var(--text-muted);">
+                                    <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="tg-timer-720">2</span>s...
+                                </div>
+                            ` : ""}
+
+                            ${/* ── App tip highlight bar ── */ ""}
+                            <div style="
+                                display:flex; align-items:flex-start; gap:12px;
+                                margin-top:18px; padding:14px 16px;
+                                border-radius:12px;
+                                background: linear-gradient(135deg, rgba(99,102,241,0.13), rgba(168,85,247,0.10));
+                                border: 1px solid rgba(168,85,247,0.35);
+                                font-size:0.8rem; color:var(--text-muted);
+                                line-height:1.6;
+                            ">
+                                <i class="fas fa-mobile-alt" style="color:#a855f7; font-size:1.3rem; margin-top:2px; flex-shrink:0;"></i>
+                                <div>
+                                    <b style="color:var(--text); font-size:0.85rem;">හොඳ නැරඹීමේ අත්දැකීම සඳහා</b><br>
+                                    <span>Download කළ ෆිල්ම් එක නැරඹීමට
+                                    <b style="color:#a855f7;">MX Player</b> හෝ
+                                    <b style="color:#a855f7;">VLC</b> app භාවිතා කරන්න.<br>
+                                    <span style="opacity:0.75;">
+                                        <i class="fab fa-google-play" style="color:#34d399;"></i> Play Store &nbsp;|&nbsp;
+                                        <i class="fab fa-apple" style="color:#94a3b8;"></i> App Store
+                                    </span></span>
+                                </div>
+                            </div>
+
                         </div>
+
                         <div class="ad-banner-block">
                             <script async="async" data-cfasync="false" src="https://pl26555333.profitablecpmratenetwork.com/9a020a6df22152fbb6bfa7e2001a7f05/invoke.js"><\/script>
                             <div id="container-9a020a6df22152fbb6bfa7e2001a7f05-tg"></div>
@@ -730,43 +798,61 @@ function switchServer(num, encodedUrl) {
     if (active) active.classList.add("active");
 }
 
-/** Telegram button — opens 2 ads in new tabs, then auto-redirects after 2s */
-function handleTelegram(link) {
-    const btn       = document.getElementById("tg-btn");
-    const countdown = document.getElementById("tg-countdown");
-    const timerEl   = document.getElementById("tg-timer");
+/** Universal Telegram button handler — per-button double-ad gate + 2s auto-redirect */
+const tgAdStates = {};   // tracks ad-click count per button id
 
-    if (!tgAdClicked) {
-        // Step 1: open first ad
+function handleTelegramBtn(btnId, countdownId, link) {
+    if (!tgAdStates[btnId]) tgAdStates[btnId] = 0;
+    const btn       = document.getElementById(btnId);
+    const countdown = document.getElementById(countdownId);
+    const timerId   = countdownId + "-val";   // reuse inner span via countdownId
+
+    if (tgAdStates[btnId] === 0) {
+        // Click 1 → first ad
         window.open(AD_URL, "_blank");
-        tgAdClicked = true;
-
+        tgAdStates[btnId] = 1;
         if (btn) {
             btn.classList.add("clicked");
-            btn.innerHTML = "<i class='fas fa-check-circle'></i> PROCESSING — CLICK AGAIN";
+            const icon = btn.querySelector("i");
+            if (icon) icon.className = "fas fa-check-circle";
+            btn.childNodes[btn.childNodes.length - 1].textContent = " ඉදිරියට ගොස් නැවත ඔබන්න";
         }
-    } else {
-        // Step 2: open second ad, then auto-redirect after 2s
+
+    } else if (tgAdStates[btnId] === 1) {
+        // Click 2 → second ad, then countdown redirect
         window.open(AD_URL, "_blank");
+        tgAdStates[btnId] = 2;
 
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Opening Telegram...";
-            btn.style.opacity = "0.7";
+            btn.style.opacity = "0.65";
+            const icon = btn.querySelector("i");
+            if (icon) icon.className = "fas fa-spinner fa-spin";
+            btn.childNodes[btn.childNodes.length - 1].textContent = " Opening...";
         }
 
-        if (countdown) countdown.style.display = "block";
-
-        let secs = 2;
-        if (timerEl) timerEl.textContent = secs;
-
-        const iv = setInterval(() => {
-            secs--;
+        if (countdown) {
+            countdown.style.display = "block";
+            // find the timer span — the last span inside countdown
+            const timerEl = countdown.querySelector("span");
+            let secs = 2;
             if (timerEl) timerEl.textContent = secs;
-            if (secs <= 0) {
-                clearInterval(iv);
-                window.location.href = link;
-            }
-        }, 1000);
+            const iv = setInterval(() => {
+                secs--;
+                if (timerEl) timerEl.textContent = secs;
+                if (secs <= 0) {
+                    clearInterval(iv);
+                    window.location.href = link;
+                }
+            }, 1000);
+        } else {
+            // no countdown element — redirect after 2s
+            setTimeout(() => { window.location.href = link; }, 2000);
+        }
     }
+}
+
+/** Legacy single Telegram button (showTelegram:true without 1080/720) */
+function handleTelegram(link) {
+    handleTelegramBtn("tg-btn", "tg-countdown", link);
 }
