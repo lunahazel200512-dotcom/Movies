@@ -394,18 +394,39 @@ function renderHome() {
     const container = document.getElementById("homeContent");
     if (!container) return;
 
+    // If arriving from a category tag click (details page → index.html?cat=X)
+    const urlCat = new URLSearchParams(window.location.search).get("cat");
+    if (urlCat) {
+        viewAll(urlCat, urlCat);
+        return;
+    }
+
     let html = "";
 
     // Recently Added — latest 20 movies
     const latest = sortByDate(movies).slice(0, 20);
     html += renderSection("Recently Added", "🔥", latest, "All");
 
-    // Category sections
-    const categories = [...new Set(movies.map(m => m.category))];
-    const catIcons = { "Action": "⚡", "Sci-Fi": "🚀", "Drama": "🎭", "Comedy": "😄", "Horror": "👻", "Romance": "💕", "Thriller": "🔪", "Animation": "🎨" };
+    // Category sections — handle comma-separated categories
+    const allCats = [...new Set(
+        movies.flatMap(m => m.category.split(",").map(c => c.trim()).filter(Boolean))
+    )];
+    const catIcons = {
+        "Action": "⚡", "Sci-Fi": "🚀", "Drama": "🎭", "Comedy": "😄",
+        "Horror": "👻", "Romance": "💕", "Thriller": "🔪", "Animation": "🎨",
+        "Anal": "🔥", "All Sex": "🎬", "Teens": "💫", "Couples": "💑",
+        "Hotwife": "👑", "Russian Porn": "🌹", "Private": "✨", "War": "⚔️",
+        "Big Dicks": "💪", "Big Tits": "💎", "Blowjobs": "👄",
+        "Cumshots": "💦", "Group Sex": "👥", "Lingerie": "🩱",
+        "Oral": "💋", "Small Tits": "🌸", "Threesomes": "🎭",
+        "Appearance": "🌟", "International": "🌍", "Secretaries": "💼"
+    };
 
-    categories.forEach(cat => {
-        const catMovies = movies.filter(m => m.category === cat).slice(0, 20);
+    allCats.forEach(cat => {
+        const catMovies = movies.filter(m =>
+            m.category.split(",").map(c => c.trim()).includes(cat)
+        ).slice(0, 20);
+        if (!catMovies.length) return;
         const icon = catIcons[cat] || "🎬";
         html += renderSection(cat, icon, catMovies, cat);
     });
@@ -453,7 +474,9 @@ function viewAll(cat, title) {
     const container = document.getElementById("homeContent");
     if (!container) return;
 
-    const filtered = cat === "All" ? sortByDate(movies) : movies.filter(m => m.category === cat);
+    const filtered = cat === "All"
+        ? sortByDate(movies)
+        : movies.filter(m => m.category.split(",").map(c => c.trim()).includes(cat));
 
     container.innerHTML = `
         <button class="back-btn" onclick="window.location.reload()">
@@ -500,8 +523,47 @@ function loadMovieDetails() {
     // Page title
     document.title = `${m.title} - GlassWave`;
 
-    // Build server buttons HTML if player is shown
-    const serverBtnsHTML = m.showPlayer ? `
+    // ── vidsrc player (when imdbId is set on the movie object) ──
+    let vidsrcPlayerHTML = "";
+    if (m.imdbId && /^tt\d+$/i.test(m.imdbId)) {
+        const subUrl    = `${window.location.origin}/Movies/subs/${m.imdbId}.vtt`;
+        const playerUrl = `https://vidsrc-embed.ru/embed/movie?imdb=${m.imdbId}&sub_url=${encodeURIComponent(subUrl)}`;
+        vidsrcPlayerHTML = `
+            <div class="watch-hint" style="margin-top:28px;">
+                <p>Watch Online &mdash; Sinhala Subtitles</p>
+                <i class="fas fa-chevron-down animated-arrow"></i>
+            </div>
+            <div class="modern-player" id="playerArea">
+                <div id="realVideo" class="video-container">
+                    <iframe
+                        id="moviePlayer"
+                        src="${playerUrl}"
+                        frameborder="0"
+                        allowfullscreen
+                        allow="autoplay; fullscreen"
+                        referrerpolicy="origin"
+                    ></iframe>
+                </div>
+            </div>
+            <div style="
+                display:inline-flex; align-items:center; gap:8px;
+                margin-top:12px; padding:9px 16px;
+                border-radius:10px; background:var(--glass);
+                border:1px solid var(--glass-border);
+                font-size:0.78rem; color:var(--text-muted);
+            ">
+                <i class="fas fa-closed-captioning" style="color:var(--accent);"></i>
+                සිංහල උපසිරැසි (Sinhala Subtitles) සක්‍රියයි
+            </div>
+            <div class="ad-banner-block">
+                <script async="async" data-cfasync="false" src="https://pl26555333.profitablecpmratenetwork.com/9a020a6df22152fbb6bfa7e2001a7f05/invoke.js"><\/script>
+                <div id="container-9a020a6df22152fbb6bfa7e2001a7f05"></div>
+            </div>
+        `;
+    }
+
+    // ── legacy server buttons (only shown when no imdbId) ──
+    const serverBtnsHTML = (m.showPlayer && !m.imdbId) ? `
         <div class="server-buttons">
             ${m.server1 ? `<button class="server-btn active" id="sv1-btn" onclick="switchServer(1, '${m.server1}')"><i class="fas fa-server"></i> Server 1</button>` : ""}
             ${m.server2 ? `<button class="server-btn" id="sv2-btn" onclick="switchServer(2, '${m.server2}')"><i class="fas fa-server"></i> Server 2</button>` : ""}
@@ -522,7 +584,9 @@ function loadMovieDetails() {
                         <h1>${m.title}</h1>
 
                         <div class="cat-tags">
-                            <span class="glass-cat" onclick="window.location.href='index.html'">${m.category}</span>
+                            ${m.category.split(",").map(c => c.trim()).filter(Boolean).map(c =>
+                                `<span class="glass-cat" onclick="window.location.href='index.html?cat=${encodeURIComponent(c)}'">${c}</span>`
+                            ).join("")}
                             <span class="glass-cat" style="border-color: #ffd700; color: #ffd700;">${m.quality}</span>
                         </div>
 
@@ -544,7 +608,7 @@ function loadMovieDetails() {
                 </div>
 
                 <div class="player-section">
-                    ${m.showPlayer ? `
+                    ${m.imdbId ? vidsrcPlayerHTML : m.showPlayer ? `
                         <div class="watch-hint">
                             <p>Watch Online</p>
                             <i class="fas fa-chevron-down animated-arrow"></i>
@@ -560,6 +624,10 @@ function loadMovieDetails() {
                             <div id="realVideo" style="display:none;" class="video-container"></div>
                         </div>
                         ${serverBtnsHTML}
+                        <div class="ad-banner-block">
+                            <script async="async" data-cfasync="false" src="https://pl26555333.profitablecpmratenetwork.com/9a020a6df22152fbb6bfa7e2001a7f05/invoke.js"><\/script>
+                            <div id="container-9a020a6df22152fbb6bfa7e2001a7f05"></div>
+                        </div>
                     ` : `
                         <div class="empty-state">
                             <i class="fas fa-video-slash"></i>
@@ -573,6 +641,13 @@ function loadMovieDetails() {
                             <button id="tg-btn" class="telegram-btn" onclick="handleTelegram('${m.telegramLink}')">
                                 <i class="fab fa-telegram"></i> Download via Telegram
                             </button>
+                            <div id="tg-countdown" style="display:none; margin-top:10px; font-size:0.82rem; color:var(--text-muted); text-align:center;">
+                                <i class="fas fa-spinner fa-spin"></i> Redirecting in <span id="tg-timer">2</span>s...
+                            </div>
+                        </div>
+                        <div class="ad-banner-block">
+                            <script async="async" data-cfasync="false" src="https://pl26555333.profitablecpmratenetwork.com/9a020a6df22152fbb6bfa7e2001a7f05/invoke.js"><\/script>
+                            <div id="container-9a020a6df22152fbb6bfa7e2001a7f05-tg"></div>
                         </div>
                     ` : ""}
                 </div>
@@ -748,18 +823,43 @@ function switchServer(num, encodedUrl) {
     if (active) active.classList.add("active");
 }
 
-/** Telegram button — two-click with ad */
+/** Telegram button — opens 2 ads in new tabs, then auto-redirects after 2s */
 function handleTelegram(link) {
-    const btn = document.getElementById("tg-btn");
+    const btn       = document.getElementById("tg-btn");
+    const countdown = document.getElementById("tg-countdown");
+    const timerEl   = document.getElementById("tg-timer");
 
     if (!tgAdClicked) {
+        // Step 1: open first ad
         window.open(AD_URL, "_blank");
         tgAdClicked = true;
+
         if (btn) {
             btn.classList.add("clicked");
-            btn.innerHTML = "<i class='fas fa-check-circle'></i> CLICK AGAIN TO DOWNLOAD";
+            btn.innerHTML = "<i class='fas fa-check-circle'></i> PROCESSING — CLICK AGAIN";
         }
     } else {
-        window.location.href = link;
+        // Step 2: open second ad, then auto-redirect after 2s
+        window.open(AD_URL, "_blank");
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Opening Telegram...";
+            btn.style.opacity = "0.7";
+        }
+
+        if (countdown) countdown.style.display = "block";
+
+        let secs = 2;
+        if (timerEl) timerEl.textContent = secs;
+
+        const iv = setInterval(() => {
+            secs--;
+            if (timerEl) timerEl.textContent = secs;
+            if (secs <= 0) {
+                clearInterval(iv);
+                window.location.href = link;
+            }
+        }, 1000);
     }
 }
