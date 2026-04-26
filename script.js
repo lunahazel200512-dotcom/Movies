@@ -4,7 +4,8 @@
 
 // --- 1. MOVIES DATABASE ---
 const movies = [
-   // ============================================================
+    
+    // ============================================================
     // 🎬 POPULAR CARTOONS 2025–2026
     // ============================================================
     {
@@ -26,7 +27,7 @@ const movies = [
         dateAdded: "2026-04-26"
     },
 
-{
+     {
         id: "youth-2026",
         title: "Youth 2026",
         rating: "7.9",
@@ -44,6 +45,7 @@ const movies = [
         showTelegram: true,
         dateAdded: "2026-04-26"
     },
+   
     {
         id: "zootopia-2-2025",
         title: "Zootopia 2 (2025)",
@@ -206,11 +208,9 @@ const movies = [
         showTelegram: false,
         dateAdded: "2026-04-26"
     },
-    // 🎬 Add more movies here following the same structure
 ];
 
-// ============================================================
-// --- 2. UTILITY HELPERS ---
+
 // ============================================================
 
 /** Decode a base64 URL string */
@@ -426,38 +426,70 @@ function loadMovieDetails() {
     // Page title
     document.title = `${m.title} - GlassWave`;
 
-    // ── vidsrc player (when imdbId is set on the movie object) ──
+    // ── vidsrc / direct-URL player (when imdbId is set on the movie object) ──
     let vidsrcPlayerHTML = "";
-    if (m.imdbId && /^tt\d+$/i.test(m.imdbId)) {
-        const subUrl    = `${window.location.origin}/Movies/subs/${m.imdbId}.vtt`;
-        const playerUrl = `https://vidsrc-embed.ru/embed/movie?imdb=${m.imdbId}&sub_url=${encodeURIComponent(subUrl)}`;
+    if (m.imdbId) {
+        // Build subtitle URL from /Movies/subs/
+        const subUrl = `${window.location.origin}/Movies/subs/${m.imdbId}.vtt`;
+
+        // Determine player URLs: prefer explicit server1/server2, else build from vidsrc-embed
+        const s1 = m.server1 || `https://vidsrc-embed.ru/embed/movie?imdb=${m.imdbId}&sub_url=${encodeURIComponent(subUrl)}`;
+        const s2 = m.server2 || "";
+
+        // Escape for use in inline onclick attributes
+        const s1Esc = s1.replace(/'/g, "\\'");
+        const s2Esc = s2.replace(/'/g, "\\'");
+
+        // Server buttons HTML — shown AFTER ads fire
+        const svrBtns = `
+            <div class="server-buttons" id="svrBtns" style="display:none;">
+                <button class="server-btn active" id="sv1-btn" onclick="switchDirectServer(1,'${s1Esc}')">
+                    <i class="fas fa-server"></i> Server 1
+                </button>
+                ${s2 ? `<button class="server-btn" id="sv2-btn" onclick="switchDirectServer(2,'${s2Esc}')">
+                    <i class="fas fa-server"></i> Server 2
+                </button>` : ""}
+            </div>
+        `;
+
         vidsrcPlayerHTML = `
             <div class="watch-hint" style="margin-top:28px;">
-                <p>Watch Online &mdash; Sinhala Subtitles</p>
+                <p>Watch Online</p>
                 <i class="fas fa-chevron-down animated-arrow"></i>
             </div>
-            <div class="modern-player" id="playerArea">
-                <div id="realVideo" class="video-container">
-                    <iframe
-                        id="moviePlayer"
-                        src="${playerUrl}"
-                        frameborder="0"
-                        allowfullscreen
-                        allow="autoplay; fullscreen"
-                        referrerpolicy="origin"
-                    ></iframe>
-                </div>
-            </div>
+
+            <!-- ── Tips bar above player ── -->
             <div style="
-                display:inline-flex; align-items:center; gap:8px;
-                margin-top:12px; padding:9px 16px;
-                border-radius:10px; background:var(--glass);
+                display:flex; flex-wrap:wrap; align-items:center; gap:12px;
+                margin-bottom:12px; padding:10px 16px;
+                border-radius:12px; background:var(--glass);
                 border:1px solid var(--glass-border);
                 font-size:0.78rem; color:var(--text-muted);
             ">
-                <i class="fas fa-closed-captioning" style="color:var(--accent);"></i>
-                සිංහල උපසිරැසි (Sinhala Subtitles) සක්‍රියයි
+                <span style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-expand" style="color:var(--accent);font-size:0.9rem;"></i>
+                    <span>හොඳ experience සඳහා <b style="color:var(--text);">Fullscreen</b> mode ගන්න</span>
+                </span>
+                <span style="opacity:0.35; display:none;">|</span>
+                <span style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-closed-captioning" style="color:var(--accent);font-size:0.9rem;"></i>
+                    <span>Subtitle නොපෙනේ නම් player ඇතුළේ <b style="color:var(--text);">CC</b> icon ඔබන්න</span>
+                </span>
             </div>
+
+            <div class="modern-player" id="playerArea">
+                <div id="fakeUI" class="play-overlay">
+                    <div class="play-overlay-bg-img" style="background-image: url('${m.img}');"></div>
+                    <button class="glow-play-btn" id="playBtn" onclick="handleVidsrcPlayer('${s1Esc}')">
+                        <i class="fas fa-play"></i> PLAY NOW
+                    </button>
+                    <span class="play-note">Click to load the stream</span>
+                </div>
+                <div id="realVideo" style="display:none;" class="video-container"></div>
+            </div>
+
+            ${svrBtns}
+
             <div class="ad-banner-block">
                 <script async="async" data-cfasync="false" src="https://pl26555333.profitablecpmratenetwork.com/9a020a6df22152fbb6bfa7e2001a7f05/invoke.js"><\/script>
                 <div id="container-9a020a6df22152fbb6bfa7e2001a7f05"></div>
@@ -703,7 +735,78 @@ function handleFakePlayer(encodedUrl) {
     }
 }
 
-/** Switch between servers (after player is loaded) */
+/** vidsrc / direct-URL player — 2-ad gate, then loads iframe + reveals server buttons */
+function handleVidsrcPlayer(playerUrl) {
+    const playBtn = document.getElementById("playBtn");
+
+    if (adState === 0) {
+        // Click 1 → open first ad
+        window.open(AD_URL, "_blank");
+        adState = 1;
+        if (playBtn) {
+            playBtn.innerHTML = "<i class='fas fa-server'></i> LOAD PLAYER";
+            playBtn.style.background = "linear-gradient(135deg, #ff6b6b, #ff8e53)";
+        }
+        const note = document.querySelector(".play-note");
+        if (note) note.textContent = "Ad opened. Click again to load the player.";
+
+    } else if (adState === 1) {
+        // Click 2 → open second ad, load iframe, show server buttons
+        window.open(AD_URL, "_blank");
+        adState = 2;
+
+        const fakeUI    = document.getElementById("fakeUI");
+        const realVideo = document.getElementById("realVideo");
+        const svrBtns   = document.getElementById("svrBtns");
+
+        if (fakeUI)    fakeUI.style.display    = "none";
+        if (svrBtns)   svrBtns.style.display   = "flex";
+        if (realVideo) {
+            realVideo.style.display = "block";
+            realVideo.innerHTML = `
+                <iframe
+                    id="moviePlayer"
+                    src="${playerUrl}"
+                    frameborder="0"
+                    allowfullscreen
+                    allow="autoplay; fullscreen"
+                    referrerpolicy="origin"
+                ></iframe>
+            `;
+        }
+    }
+}
+
+/** Switch between direct-URL servers (no base64 decode needed) */
+function switchDirectServer(num, url) {
+    // If ads not done yet, just trigger the flow with this url
+    if (adState < 2) {
+        handleVidsrcPlayer(url);
+        return;
+    }
+
+    const realVideo = document.getElementById("realVideo");
+    if (realVideo) {
+        realVideo.style.display = "block";
+        realVideo.innerHTML = `
+            <iframe
+                id="moviePlayer"
+                src="${url}"
+                frameborder="0"
+                allowfullscreen
+                allow="autoplay; fullscreen"
+                referrerpolicy="origin"
+            ></iframe>
+        `;
+    }
+
+    // Update active button state
+    document.querySelectorAll(".server-btn").forEach(btn => btn.classList.remove("active"));
+    const active = document.getElementById("sv" + num + "-btn");
+    if (active) active.classList.add("active");
+}
+
+
 function switchServer(num, encodedUrl) {
     if (adState < 2) {
         // Force load with chosen server
