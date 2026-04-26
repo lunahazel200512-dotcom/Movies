@@ -9,12 +9,31 @@ const movies = [
     // 🎬 POPULAR CARTOONS 2025–2026
     // ============================================================
     {
+        id: "the-little-mermaid",
+        title: "The Little Mermaid | සිංහල හඩකැවූ",
+        rating: "5.4",
+        quality: "HD",
+        img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mTAiBJGg8mqEfnYHHbi37ZoRSZm.jpg",
+        category: "Cartoon",
+        duration: "1h 25m",
+        casting: "N/N",
+        description: "After an acrimonious break up, the Mystery Inc. gang are individually brought to an island resort to investigate strange goings on.",
+        imdbId: "tt18526902",
+        server1: "https://drive.google.com/file/d/1AFBU0KfAJEHrPm4IE8Z9SzBkUqVLlMRp/view",
+        server2: "https://luluvdo.com/e/mwg5e8y23zf8",
+        telegramLink: "https://t.me/SHFMovieBot?start=qN3q46z4",
+        showPlayer: true,
+        showTelegram: true,
+        dateAdded: "2026-04-26"
+    },
+    
+    {
         id: "scooby-oo",
         title: "Scooby Doo 1 | සිංහල හඩකැවූ",
         rating: "5.4",
         quality: "HD",
         img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mTAiBJGg8mqEfnYHHbi37ZoRSZm.jpg",
-        category: "Animation",
+        category: "Cartoon",
         duration: "1h 25m",
         casting: "N/N",
         description: "After an acrimonious break up, the Mystery Inc. gang are individually brought to an island resort to investigate strange goings on.",
