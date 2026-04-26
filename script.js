@@ -20,7 +20,7 @@ const movies = [
         description: "A young reporter and his niece discover a beautiful and enchanting creature they believe to be the real little mermaid.",
         imdbId: "tt5493944",
         server1: "https://drive.google.com/file/d/1AFBU0KfAJEHrPm4IE8Z9SzBkUqVLlMRp/view",
-        server2: "https://luluvdo.com/e/mwg5e8y23zf8",
+        server2: "https://drive.google.com/file/d/1AFBU0KfAJEHrPm4IE8Z9SzBkUqVLlMRp/view",
         telegramLink: "",
         showPlayer: true,
         showTelegram: false,
