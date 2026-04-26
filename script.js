@@ -5,6 +5,31 @@
 // --- 1. MOVIES DATABASE ---
 const movies = [
     {
+    id: "haal-2025",
+    title: "Haal (2025)",
+    rating: "5.6",
+    quality: "FHD",
+    img: "https://cinesubz.lk/wp-content/uploads/2026/04/xmDQj0clWvkPiuvsl9LEwkrFjIA.jpg",
+    category: "Malayalam",
+    duration: "02:45:00",
+    casting: "Shane Nigam, Sakshi Vaidya, Johny Antony, Sangeetha, Nishanth Sagar",
+    description: "Two young lovers from opposing social classes navigate prejudice and family expectations in modern-day society, as their forbidden romance challenges deep-rooted traditions.",
+    imdbId: "tt32104889",
+    server1: "https://lulustream.com/e/os4oa4xac13y",
+    server2: "https://lulustream.com/e/os4oa4xac13y",
+    showPlayer: true,
+    showTelegram: false,
+    showTelegram1080: true,
+    telegramLink1080: "https://t.me/SHFMovieBot?start=CeWwzQI0",
+    showTelegram720: true,
+    telegramLink720: "https://t.me/SHFMovieBot?start=bM8uTmaF",
+    showSubtitle: true,
+    subtitleLink: "https://cineru.lk/haal-2026-sinhala-subtitles/",
+    telegramLink: "https://t.me/SHFMovieBot?start=CeWwzQI0",
+    dateAdded: "2026-04-26"
+},
+	
+	{
         id: "the-little-mermaid",
         title: "The Little Mermaid | සිංහල හඩකැවූ",
         rating: "5.0",
