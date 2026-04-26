@@ -9,6 +9,25 @@ const movies = [
     // 🎬 POPULAR CARTOONS 2025–2026
     // ============================================================
     {
+        id: "scooby-oo",
+        title: "Scooby Doo 1 | සිංහල හඩකැවූ",
+        rating: "5.4",
+        quality: "HD",
+        img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mTAiBJGg8mqEfnYHHbi37ZoRSZm.jpg",
+        category: "Animation",
+        duration: "1h 25m",
+        casting: "N/N",
+        description: "After an acrimonious break up, the Mystery Inc. gang are individually brought to an island resort to investigate strange goings on.",
+        imdbId: "tt18526902",
+        server1: "https://luluvdo.com/e/mwg5e8y23zf8",
+        server2: "https://luluvdo.com/e/mwg5e8y23zf8",
+        telegramLink: "https://t.me/SHFMovieBot?start=qN3q46z4",
+        showPlayer: true,
+        showTelegram: true,
+        dateAdded: "2026-04-26"
+    },
+    
+    {
         id: "youth-2026",
         title: "Youth (2026)",
         rating: "7.1",
@@ -47,7 +66,7 @@ const movies = [
     },
    {
         id: "dolphin-boy",
-        title: "Dolphin Boy | සිසිංහල හඩකැවූ",
+        title: "Dolphin Boy | සිංහල හඩකැවූ",
         rating: "5.1",
         quality: "FHD",
         img: "https://image.tmdb.org/t/p/w1280/gISoDEiaUH9BNEunmLC7FgUVaia.jpg",
