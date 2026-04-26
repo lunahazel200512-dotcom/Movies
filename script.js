@@ -231,14 +231,8 @@ function renderHome() {
         movies.flatMap(m => m.category.split(",").map(c => c.trim()).filter(Boolean))
     )];
     const catIcons = {
-        "Sinhala Dubbed": "🇱🇰", "Sci-Fi": "🚀", "Drama": "🎭", "Comedy": "😄",
-        "Horror": "👻", "Romance": "💕", "Thriller": "🔪", "Animation": "🎨",
-        "Anal": "🔥", "All Sex": "🎬", "Teens": "💫", "Couples": "💑",
-        "Hotwife": "👑", "Russian Porn": "🌹", "Private": "✨", "War": "⚔️",
-        "Big Dicks": "💪", "Big Tits": "💎", "Blowjobs": "👄",
-        "Cumshots": "💦", "Group Sex": "👥", "Lingerie": "🩱",
-        "Oral": "💋", "Small Tits": "🌸", "Threesomes": "🎭",
-        "Appearance": "🌟", "International": "🌍", "Secretaries": "💼"
+        "Sinhala Dubbed": "🌟", "Tamil" : "🌸", "Malayalam": "💕", "Animation": "🎨",
+        
     };
 
     allCats.forEach(cat => {
