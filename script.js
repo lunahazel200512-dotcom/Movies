@@ -231,7 +231,7 @@ function renderHome() {
         movies.flatMap(m => m.category.split(",").map(c => c.trim()).filter(Boolean))
     )];
     const catIcons = {
-        "Action": "⚡", "Sci-Fi": "🚀", "Drama": "🎭", "Comedy": "😄",
+        "Sinhala Dubbed": "🇱🇰", "Sci-Fi": "🚀", "Drama": "🎭", "Comedy": "😄",
         "Horror": "👻", "Romance": "💕", "Thriller": "🔪", "Animation": "🎨",
         "Anal": "🔥", "All Sex": "🎬", "Teens": "💫", "Couples": "💑",
         "Hotwife": "👑", "Russian Porn": "🌹", "Private": "✨", "War": "⚔️",
