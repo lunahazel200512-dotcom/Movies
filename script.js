@@ -4,12 +4,29 @@
 
 // --- 1. MOVIES DATABASE ---
 const movies = [
-    
+
     // ============================================================
     // 🎬 POPULAR CARTOONS 2025–2026
     // ============================================================
     {
-        id: "ne-zha-2-2025",
+        id: "youth-2026",
+        title: "Youth (2026)",
+        rating: "7.9",
+        quality: "FHD",
+        img: "https://myimg.click/images/2026/04/16/Youth-2026.jpg",
+        category: "Animation, Action, Adventure",
+        duration: "02:24:00",
+        casting: "Yanting Lü, Joseph, Mo Han, Michelle Yeoh",
+        description: "After a great catastrophe, the souls of Nezha and Aobing are saved, but their bodies face ruin. To give them new life, Taiyi Zhenren turns to the mystical seven-colored lotus in a daring bid to rebuild them and change their fate. The highest-grossing animated film of all time with $2.26 billion worldwide.",
+        imdbId: "tt38693888",
+        server1: "https://vidsrc.xyz/embed/movie/tt38693888",
+        server2: "https://vsembed.ru/embed/movie?imdb=tt38693888",
+        telegramLink: "https://t.me/your_link",
+        showPlayer: true,
+        showTelegram: true,
+        dateAdded: "2026-04-26"
+    },
+    {
         title: "Ne Zha 2 (2025)",
         rating: "7.9",
         quality: "FHD",
@@ -26,26 +43,6 @@ const movies = [
         showTelegram: false,
         dateAdded: "2026-04-26"
     },
-
-     {
-        id: "youth-2026",
-        title: "Youth 2026",
-        rating: "7.9",
-        quality: "FHD",
-        img: "https://myimg.click/images/2026/04/16/Youth-2026.jpg",
-        category: "Animation, Action, Adventure",
-        duration: "02:24:00",
-        casting: "Yanting Lü, Joseph, Mo Han, Michelle Yeoh",
-        description: "After a great catastrophe, the souls of Nezha and Aobing are saved, but their bodies face ruin. To give them new life, Taiyi Zhenren turns to the mystical seven-colored lotus in a daring bid to rebuild them and change their fate. The highest-grossing animated film of all time with $2.26 billion worldwide.",
-        imdbId: "tt38693888",
-        server1: "https://vidsrc.xyz/embed/movie/tt38693888",
-        server2: "https://vsembed.ru/embed/movie?imdb=tt38693888/",
-        telegramLink: "https://t.me/your_link",
-        showPlayer: true,
-        showTelegram: true,
-        dateAdded: "2026-04-26"
-    },
-   
     {
         id: "zootopia-2-2025",
         title: "Zootopia 2 (2025)",
@@ -429,18 +426,27 @@ function loadMovieDetails() {
     // ── vidsrc / direct-URL player (when imdbId is set on the movie object) ──
     let vidsrcPlayerHTML = "";
     if (m.imdbId) {
-        // Build subtitle URL from /Movies/subs/
         const subUrl = `${window.location.origin}/Movies/subs/${m.imdbId}.vtt`;
+        const subParam = `&sub_url=${encodeURIComponent(subUrl)}`;
 
-        // Determine player URLs: prefer explicit server1/server2, else build from vidsrc-embed
-        const s1 = m.server1 || `https://vidsrc-embed.ru/embed/movie?imdb=${m.imdbId}&sub_url=${encodeURIComponent(subUrl)}`;
-        const s2 = m.server2 || "";
+        // Append sub_url to each server URL
+        function appendSub(url) {
+            if (!url) return "";
+            // Avoid double-appending
+            if (url.includes("sub_url=")) return url;
+            const sep = url.includes("?") ? "&" : "?";
+            return url + sep + `sub_url=${encodeURIComponent(subUrl)}`;
+        }
 
-        // Escape for use in inline onclick attributes
+        const s1Raw = m.server1 || `https://vidsrc-embed.ru/embed/movie?imdb=${m.imdbId}`;
+        const s2Raw = m.server2 || "";
+
+        const s1 = appendSub(s1Raw);
+        const s2 = s2Raw ? appendSub(s2Raw) : "";
+
         const s1Esc = s1.replace(/'/g, "\\'");
         const s2Esc = s2.replace(/'/g, "\\'");
 
-        // Server buttons HTML — shown AFTER ads fire
         const svrBtns = `
             <div class="server-buttons" id="svrBtns" style="display:none;">
                 <button class="server-btn active" id="sv1-btn" onclick="switchDirectServer(1,'${s1Esc}')">
@@ -470,7 +476,6 @@ function loadMovieDetails() {
                     <i class="fas fa-expand" style="color:var(--accent);font-size:0.9rem;"></i>
                     <span>හොඳ experience සඳහා <b style="color:var(--text);">Fullscreen</b> mode ගන්න</span>
                 </span>
-                <span style="opacity:0.35; display:none;">|</span>
                 <span style="display:flex;align-items:center;gap:6px;">
                     <i class="fas fa-closed-captioning" style="color:var(--accent);font-size:0.9rem;"></i>
                     <span>Subtitle නොපෙනේ නම් player ඇතුළේ <b style="color:var(--text);">CC</b> icon ඔබන්න</span>
