@@ -36,7 +36,7 @@ const movies = [
         duration: "02:24:00",
         casting: "Yanting Lü, Joseph, Mo Han, Michelle Yeoh",
         description: "After a great catastrophe, the souls of Nezha and Aobing are saved, but their bodies face ruin. To give them new life, Taiyi Zhenren turns to the mystical seven-colored lotus in a daring bid to rebuild them and change their fate. The highest-grossing animated film of all time with $2.26 billion worldwide.",
-        imdbId: "tt34956443",
+        imdbId: "tt38693888",
         server1: "https://vidsrc.xyz/embed/movie/tt38693888",
         server2: "",
         telegramLink: "https://t.me/your_link",
