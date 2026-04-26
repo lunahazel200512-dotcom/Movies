@@ -21,7 +21,7 @@ const movies = [
         imdbId: "tt5493944",
         server1: "https://drive.google.com/file/d/1AFBU0KfAJEHrPm4IE8Z9SzBkUqVLlMRp/view",
         server2: "https://luluvdo.com/e/mwg5e8y23zf8",
-        telegramLink: "https://t.me/SHFMovieBot?start=qN3q46z4",
+        telegramLink: "",
         showPlayer: true,
         showTelegram: false,
         dateAdded: "2026-04-26"
