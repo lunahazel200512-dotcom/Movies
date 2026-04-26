@@ -45,7 +45,24 @@ const movies = [
         showTelegram: true,
         dateAdded: "2026-04-26"
     },
-   
+   {
+        id: "white-snake",
+        title: "Dolphin Boy | සිසිංහල හඩකැවූ",
+        rating: "5.1",
+        quality: "FHD",
+        img: "https://image.tmdb.org/t/p/w1280/gISoDEiaUH9BNEunmLC7FgUVaia.jpg",
+        category: "Animation",
+        duration: "1h 25m",
+        casting: "N/N",
+        description: "Dolphin Snowball rescues a little boy in the waves. Since then, they carelessly grow up together, exciting the marine life with their funny tricks. But one day, the peace of their joyful little world is destroyed by the evil Octopus.",
+        imdbId: "tt18526902",
+        server1: "https://vidsrc.xyz/embed/movie/tt18526902",
+        server2: "https://vsembed.ru/embed/movie?imdb=tt18526902",
+        telegramLink: "https://t.me/SHFMovieBot?start=FveuGxSu",
+        showPlayer: true,
+        showTelegram: false,
+        dateAdded: "2026-04-26"
+    },
 ];
 
 
